@@ -6,8 +6,8 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header text-center">{{ __('Biblioteca') }}</div>
+            <div class="card border-dark mb-3">
+                <div class="card-header text-white  bg-dark mb-3  text-center">{{ __('Biblioteca') }}</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -15,10 +15,10 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                      <nav aria-label="breadcrumb ">
-                        <ol class="breadcrumb dark">
-                          <li class="breadcrumb-item active" aria-current="page"><a href="books">Visualisar Livros</a></li>
-                          <li class="breadcrumb-item" ><a href="add">Adicionar Livros</a></li>
+                      <nav aria-label="breadcrumb  ">
+                        <ol class="breadcrumb  ">
+                          <li class="breadcrumb-item active" aria-current="page"><a href="books">Visualizar Livros</a></li>
+                          <li class="breadcrumb-item active " ><a href="add">Adicionar Livros</a></li>
 
                         </ol>
                       </nav>

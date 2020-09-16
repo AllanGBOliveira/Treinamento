@@ -7,16 +7,16 @@
                 <div class="card-header text-center text-white  bg-dark mb-3 ">Emprestimo</div>
                   
                     <div class="card-body text-dark">
-                        <form method="post" action="{{route('val',$books,['id'=>$books->id])}}">
+                        <form method="post" action="{{route('take',$book,['id'=>$book->id])}}">
                             @csrf @method('put')
 
                             <ul class="list-group">
-                                <li class="list-group-item">Título: {{$books->title}}</li>
-                                <li class="list-group-item">Autor: {{$books->author}}</li>
-                                <li class="list-group-item">Doador: {{$books->donor}}</li>
-                                <li class="list-group-item">Data de Doação: {{date('d/m/Y', strtotime($books->created_at))}}</li>
-                                <li class="list-group-item">Funcionario Responsavel: {{$books->user_name}}</li>
-                                <li class="list-group-item">Disponibilidade: @if ($books->avaliable) SIM @else NÃO @endif</li>
+                                <li class="list-group-item">Título: {{$book->title}}</li>
+                                <li class="list-group-item">Autor: {{$book->author}}</li>
+                                <li class="list-group-item">Doador: {{$book->donor}}</li>
+                                <li class="list-group-item">Data de Doação: {{$book->created_at->formatLocalized(' %d / %m / %Y')}}</li>
+                                <li class="list-group-item">Funcionario Responsavel: {{$book->user_name}}</li>
+                                <li class="list-group-item">Disponibilidade: @if ($book->avaliable) SIM @else NÃO @endif</li>
 
                                 <li class="list-group-item">
                                     <div class="row">
@@ -28,9 +28,9 @@
                                                 </button>
                                             </form>
                                         </div>
-                                        @if($books->avaliable)
+                                        @if($book->avaliable)
                                         <div class="col">
-                                            <form action="{{route('val',$books,['id'=>$books->id])}}" method="put">
+                                            <form action="{{route('take',$book,['id'=>$book->id])}}" method="put">
                                                 <button class="btn btn-primary float-right">
                                                     Emprestar
                                                 </button>
@@ -38,7 +38,7 @@
                                         
                                             @else
                                             <div class="col">
-                                                <form action="{{route('return',$books,['id'=>$books->id])}}" method="put">
+                                                <form action="{{route('return',$book,['id'=>$book->id])}}" method="put">
                                                     <button class="btn btn-success float-right">
                                                         Devolver
                                                     </button>

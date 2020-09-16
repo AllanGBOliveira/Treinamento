@@ -18,20 +18,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-/*Route::get('/','BooksController@index');*/
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::Resource('books', 'BooksController');
-Route::get('/add', function () {
-    return view('add');
-});
+Route::get('add','BooksController@add')->name('add');
 Route::delete('books/delete/{id}', 'BooksController@delete')->name('delete');
-
-
-Route::get('reserve/{id}','BooksController@reserve')->name('reserve');
-Route::get('books/val/{id}','BooksController@val')->name('val');
+Route::get('books/reserve/{id}','BooksController@reserve')->name('reserve');
+Route::get('books/take/{id}','BooksController@take')->name('take');
 Route::get('books/return/{id}','BooksController@return')->name('return');
 
 

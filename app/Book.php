@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Books extends Model
+class Book extends Model
 {
     protected $fillable = [
         'user_id',
@@ -21,4 +21,5 @@ class Books extends Model
         'updated_at',
         
     ];
+   
 }

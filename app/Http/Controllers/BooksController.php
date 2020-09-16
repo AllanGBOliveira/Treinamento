@@ -2,161 +2,95 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
+
 
 class BooksController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
+        $book = \App\Book::paginate(5);
 
-        $books = \App\Books::all();
-        
-
-        return view('books', compact('books'));
+        return view('books', ['books' => $book]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function add()
     {
-        \App\Books::create($data);
-        return view('books.create');
+        return view('add');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(Book $request)
     {
-        $id = \Auth::id();
-        $name = \Auth::user()->name;
+        $bookId = Auth::id();
+        $name = Auth::user()->name;
         $data = $request->all();
-        unset($data['_token']);
-        unset($data['_method']);
-        $data['user_id'] = $id;
+
+        $data['user_id'] = $bookId;
         $data['user_name'] = $name;
         $data['avaliable'] = true;
-        
-        
-       
-        
-        \App\Books::create($data);
-        
 
-        return redirect('books');
+        \App\Book::create($data);
+
+        return redirect('books')->with('success', 'Livro adicionado com sucesso.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function edit($bookId)
     {
-        
+
+        $book = \App\Book::find($bookId);
+        return view('edit', ["book" => $book]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        
-        $books = \App\Books::where('id',$id)->first();
-        return view('edit', ["books"=>$books]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $data = $request->all();
-        
-        unset($data['_token']);
-        unset($data['_method']);
-
-         \App\Books::where('id',$id)->update($data);
-
-
-        return redirect('books');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function delete(Request $request,$id)
+    public function update(Book $request, $bookId)
     {
         $data = $request->all();
 
         unset($data['_token']);
         unset($data['_method']);
 
-        \App\Books::where('id',$id)->delete();
+        \App\Book::find($bookId)->update($data);
 
-
-        return redirect('/books');
-
+        return redirect('books')->with('success', 'Livro editado com sucesso.');
     }
 
-    public function reserve($id)
+    public function delete( $bookId)
     {
-        
-        $books = \App\Books::where('id',$id)->first();
-        return view('reserve', ["books"=>$books]);
+        \App\Book::find($bookId)->delete();
+
+        return redirect('/books')->with('success', 'Livro deletado com sucesso.');
     }
 
-  public function val(Request $request,$id)
-  {
-    
-    $data = $request->all();
-    $data['avaliable'] = false;
+    public function reserve($bookId)
+    {
+        $book = \App\Book::find($bookId)->first();
+        return view('reserve', ["book" => $book]);
+    }
+
+    public function take(Request $request, $bookId)
+    {
+        $data = $request->all();
+        $data['avaliable'] = false;
         unset($data['_token']);
         unset($data['_method']);
 
-      
-        
-         \App\Books::where('id',$id)->update($data);
+        \App\Book::find($bookId)->update($data);
 
-         return redirect('books');
-        
-  }
-  public function return(Request $request,$id)
-  {
-    
-    $data = $request->all();
-    $data['avaliable'] = true;
+        return redirect('books')->with('success', 'Livro locado com sucesso.');
+    }
+    public function return(Request $request, $bookId)
+    {
+        $data = $request->all();
+        $data['avaliable'] = true;
         unset($data['_token']);
         unset($data['_method']);
 
-      
-        
-         \App\Books::where('id',$id)->update($data);
+        \App\Book::find($bookId)->update($data);
 
-         return redirect('books');
-        
-  }
-  
+        return redirect('books')->with('success', 'Livro devolvido com sucesso.');
+    }
 }
