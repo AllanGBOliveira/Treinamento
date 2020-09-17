@@ -14,9 +14,9 @@ class BooksController extends Controller
 
     public function index()
     {
-        $book = \App\Book::paginate(5);
+        $books = \App\Book::paginate(5);
 
-        return view('books', ['books' => $book]);
+        return view('books', ['books' => $books]);
     }
 
     public function add()
@@ -26,12 +26,12 @@ class BooksController extends Controller
 
     public function store(Book $request)
     {
-        $bookId = Auth::id();
-        $name = Auth::user()->name;
+        $userId = Auth::id();
+        $userName = Auth::user()->name;
         $data = $request->all();
 
-        $data['user_id'] = $bookId;
-        $data['user_name'] = $name;
+        $data['user_id'] = $userId;
+        $data['user_name'] = $userName;
         $data['avaliable'] = true;
 
         \App\Book::create($data);
